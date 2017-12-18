@@ -34,14 +34,14 @@ class AppStatisticsManagerTest {
 
 
     @Autowired
-    val appStatisticsManager: AppStatisticsManager? = null
+    lateinit var appStatisticsManager: AppStatisticsManager
 
 
     @MockBean
-    val repo: AppsDataRepository? = null
+    lateinit var repo: AppsDataRepository
 
     @Autowired
-    val redisTemplate : RedisTemplate<String, String>? = null
+    lateinit var redisTemplate : RedisTemplate<String, String>
 
     /*
      *   @desc Unit test for aggregateWithPersianYearAndWeek method in AppStatisticsManager
@@ -52,7 +52,7 @@ class AppStatisticsManagerTest {
         /*
          * Null Input test
          */
-        var res = appStatisticsManager!!.aggregateWithPersianYearAndWeek(listOf<AppsData>())
+        var res = appStatisticsManager.aggregateWithPersianYearAndWeek(listOf<AppsData>())
         Assert.assertNotNull("Null returned by the method", res)
         Assert.assertEquals("method returned non-empty list by empty input", 0, res.size)
 
@@ -81,7 +81,7 @@ class AppStatisticsManagerTest {
         calendar.set(1396, 0, 18)
         appsDataList.add(AppsData("1", calendar.time, 9, 9, 9, 9, 9, 9, 9))
 
-        res = appStatisticsManager!!.aggregateWithPersianYearAndWeek(appsDataList)
+        res = appStatisticsManager.aggregateWithPersianYearAndWeek(appsDataList)
         Assert.assertNotNull("Null returned by the method", res)
         Assert.assertEquals("normal test result check", 4, res.size)
         Assert.assertTrue(res.contains(AppStatistics(1395,53,4,4,4)))
@@ -111,20 +111,20 @@ class AppStatisticsManagerTest {
         val endDate = GregorianCalendar(2018, 10, 10).time
 
 
-        Mockito.`when`(repo!!.findByTypeAndReportTimeBetween(type, startDate, endDate))
+        Mockito.`when`(repo.findByTypeAndReportTimeBetween(type, startDate, endDate))
                 .thenReturn(ans)
 
-        redisTemplate!!.delete(startDate.toString()+ endDate.toString() + type.toString())
+        redisTemplate.delete(startDate.toString()+ endDate.toString() + type.toString())
         /* TEST */
-        appStatisticsManager!!.calculateAppStatistics(startDate, endDate, type)
+        appStatisticsManager.calculateAppStatistics(startDate, endDate, type)
 
-        Mockito.verify(repo, Mockito.times(1))!!.findByTypeAndReportTimeBetween(type, startDate, endDate)
+        Mockito.verify(repo, Mockito.times(1)).findByTypeAndReportTimeBetween(type, startDate, endDate)
 
-        appStatisticsManager!!.calculateAppStatistics(startDate, endDate, type)
+        appStatisticsManager.calculateAppStatistics(startDate, endDate, type)
 
-        Mockito.verify(repo, Mockito.times(1))!!.findByTypeAndReportTimeBetween(type, startDate, endDate)
+        Mockito.verify(repo, Mockito.times(1)).findByTypeAndReportTimeBetween(type, startDate, endDate)
 
-        redisTemplate!!.delete(startDate.toString()+ endDate.toString() + type.toString())
+        redisTemplate.delete(startDate.toString()+ endDate.toString() + type.toString())
 
     }
 }

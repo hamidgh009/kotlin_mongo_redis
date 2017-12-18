@@ -37,12 +37,10 @@ class AppConfiguration {
         return redisTemplate
     }
 
-
     @Bean
     fun cacheManager(): CacheManager {
         val cacheManager = RedisCacheManager(redisTemplate())
         cacheManager.setDefaultExpiration(env!!.getProperty("redis.expiration_time").toLong())
         return cacheManager
     }
-
 }

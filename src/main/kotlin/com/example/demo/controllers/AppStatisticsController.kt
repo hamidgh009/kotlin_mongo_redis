@@ -13,7 +13,7 @@ import java.util.*
 class AppStatisticsController {
 
     @Autowired
-    private val appStatisticsManager: AppStatisticsManager? = null
+    private lateinit var appStatisticsManager: AppStatisticsManager
 
 
     /*
@@ -28,7 +28,7 @@ class AppStatisticsController {
         if (!areInputsValid(startDate, endDate, type))
             throw BadRequestException()
 
-        return appStatisticsManager!!.calculateAppStatistics(startDate, endDate, type)
+        return appStatisticsManager.calculateAppStatistics(startDate, endDate, type)
     }
 
     /*

@@ -19,7 +19,7 @@ import java.net.URI
 class StatsTest {
 
     @Autowired
-    val restTemplate : TestRestTemplate? = null
+    lateinit var restTemplate : TestRestTemplate
 
     var headers : HttpHeaders = HttpHeaders()
 
@@ -34,7 +34,7 @@ class StatsTest {
     @Test
     fun invalidDateTest(){
 
-        val response = restTemplate!!.exchange(getInvalidDateUrl(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
+        val response = restTemplate.exchange(getInvalidDateUrl(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
         Assert.assertEquals(400 , response.statusCode.value())
     }
 
@@ -47,10 +47,10 @@ class StatsTest {
     */
     @Test
     fun invalidUrlTextTest(){
-        var response = restTemplate!!.exchange(getInvalidUrlText1(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
+        var response = restTemplate.exchange(getInvalidUrlText1(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
         Assert.assertEquals(400 , response.statusCode.value())
 
-        response = restTemplate!!.exchange(getInvalidUrlText2(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
+        response = restTemplate.exchange(getInvalidUrlText2(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
         Assert.assertEquals(400 , response.statusCode.value())
     }
 
@@ -67,7 +67,7 @@ class StatsTest {
      */
     @Test
     fun normalInputTest(){
-        val response = restTemplate!!.exchange(getNormalUri(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
+        val response = restTemplate.exchange(getNormalUri(), HttpMethod.GET, HttpEntity<String>(headers),String::class.java)
         Assert.assertEquals(200 , response.statusCode.value())
     }
 

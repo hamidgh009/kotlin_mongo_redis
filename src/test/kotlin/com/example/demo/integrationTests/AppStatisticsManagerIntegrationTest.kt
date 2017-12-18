@@ -35,13 +35,13 @@ class AppStatisticsManagerIntegrationTest {
     }
 
     @Autowired
-    val appStatisticsManager : AppStatisticsManager? = null
+    lateinit var appStatisticsManager : AppStatisticsManager
 
     @MockBean
-    val repo : AppsDataRepository? = null
+    lateinit var repo : AppsDataRepository
 
     @Autowired
-    val redisTemplate : RedisTemplate<String, String>? = null
+    lateinit var redisTemplate : RedisTemplate<String, String>
 
 
     /*
@@ -71,7 +71,7 @@ class AppStatisticsManagerIntegrationTest {
 
 
 
-        Mockito.`when`(repo!!.findByTypeAndReportTimeBetween(type, startDate, endDate))
+        Mockito.`when`(repo.findByTypeAndReportTimeBetween(type, startDate, endDate))
                 .thenReturn(ans)
 
         /* RESPONSE CONFIGURATION */
@@ -84,10 +84,10 @@ class AppStatisticsManagerIntegrationTest {
         response.stats = appStatistics
 
         /* REMOVE KEY FROM CACHE */
-        redisTemplate!!.delete(startDate.toString()+ endDate.toString() + type.toString())
+        redisTemplate.delete(startDate.toString()+ endDate.toString() + type.toString())
 
         /* TEST */
-        val ret = appStatisticsManager!!.calculateAppStatistics(startDate, endDate,1)
+        val ret = appStatisticsManager.calculateAppStatistics(startDate, endDate,1)
 
         Assert.assertNotNull(ret)
         Assert.assertNotNull(ret.stats.get(0))
