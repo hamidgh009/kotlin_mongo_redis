@@ -1,12 +1,9 @@
 package com.example.demo
 
-import org.apache.naming.SelectorContext
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.CacheManager
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.PropertySource
 import org.springframework.core.env.Environment
 import org.springframework.data.redis.cache.RedisCacheManager
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory
@@ -17,10 +14,10 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 class AppConfiguration {
 
     @Autowired
-    val env : Environment? = null
+    lateinit var env: Environment
 
     @Autowired
-    lateinit var jedisConnectionFactory : JedisConnectionFactory
+    lateinit var jedisConnectionFactory: JedisConnectionFactory
 
 
     @Bean
@@ -37,7 +34,7 @@ class AppConfiguration {
     @Bean
     fun cacheManager(): CacheManager {
         val cacheManager = RedisCacheManager(redisTemplate())
-        cacheManager.setDefaultExpiration(env!!.getProperty("redis.expiration_time").toLong())
+        cacheManager.setDefaultExpiration(env.getProperty("redis.expiration_time").toLong())
         return cacheManager
     }
 }
