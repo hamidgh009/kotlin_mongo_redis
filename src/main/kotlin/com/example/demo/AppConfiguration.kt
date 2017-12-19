@@ -19,17 +19,14 @@ class AppConfiguration {
     @Autowired
     val env : Environment? = null
 
-    @Bean
-    fun jedisConnectionFactory(): JedisConnectionFactory {
-        val factory = JedisConnectionFactory()
-        factory.usePool = true
-        return factory
-    }
+    @Autowired
+    lateinit var jedisConnectionFactory : JedisConnectionFactory
+
 
     @Bean
     fun redisTemplate(): RedisTemplate<Any, Any> {
         val redisTemplate = RedisTemplate<Any, Any>()
-        redisTemplate.connectionFactory = jedisConnectionFactory()
+        redisTemplate.connectionFactory = jedisConnectionFactory
         redisTemplate.hashValueSerializer = StringRedisSerializer()
         redisTemplate.keySerializer = StringRedisSerializer()
         redisTemplate.hashKeySerializer = StringRedisSerializer()
